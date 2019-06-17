@@ -20,7 +20,7 @@ class RegisterForm extends Component {
     return re.test(String(email).toLowerCase());
   };
   isValid = () => {
-    const { email, password, fullname } = this.state;
+    const { email, password, fullname, confirmPassword } = this.state;
     let temp = true;
     if (String(password.text).length <= 4) {
       this.setState(per => ({
@@ -36,6 +36,24 @@ class RegisterForm extends Component {
         ...per,
         password: {
           ...per.password,
+          error: false
+        }
+      }));
+    }
+    if (String(confirmPassword.text).length <= 4) {
+      this.setState(per => ({
+        ...per,
+        confirmPassword: {
+          ...per.confirmPassword,
+          error: true
+        }
+      }));
+      temp = false;
+    } else {
+      this.setState(per => ({
+        ...per,
+        confirmPassword: {
+          ...per.confirmPassword,
           error: false
         }
       }));
