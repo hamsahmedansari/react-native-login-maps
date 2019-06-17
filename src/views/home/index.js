@@ -55,7 +55,7 @@ class Home extends Component {
       <View>
         {/* <Text>some text</Text> */}
         <MapView
-          style={{ width: "100%", height: "80%" }}
+          style={{ width: "100%", height: "100%" }}
           initialRegion={{
             latitude: location.coords.latitude,
             longitude: location.coords.longitude,

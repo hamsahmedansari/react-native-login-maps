@@ -31,7 +31,7 @@ const Welcome = props => {
             borderRadius: 10
           }}
         >
-          <Text style={{ color: "#ffffff" }}>Login</Text>
+          <Text style={{ color: "#ffffff", textAlign: "center" }}>Login</Text>
         </TouchableOpacity>
         <Text style={{ textAlign: "center" }}>
           Din't Have an Account ?{" "}
