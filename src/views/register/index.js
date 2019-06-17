@@ -16,7 +16,9 @@ class Register extends Component {
   }
   render() {
     return (
-      <View
+      <KeyboardAvoidingView
+        behavior="padding"
+        // style={{ flex: 1 }}
         style={{
           flex: 1,
           justifyContent: "flex-start",
@@ -69,7 +71,7 @@ class Register extends Component {
           </TouchableOpacity>
         </View>
         <View />
-      </View>
+      </KeyboardAvoidingView>
     );
   }
 }

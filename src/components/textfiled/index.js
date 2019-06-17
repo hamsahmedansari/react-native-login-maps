@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { KeyboardAvoidingView, Text, TextInput } from "react-native";
+import { View, Text, TextInput } from "react-native";
 class InputFiled extends Component {
   render() {
     const {
@@ -11,9 +11,9 @@ class InputFiled extends Component {
       isPassword = false
     } = this.props;
     return (
-      <KeyboardAvoidingView
-        behavior="padding"
-        enabled
+      <View
+        // behavior="padding"
+        // enabled
         style={{ marginTop: 10 }}
       >
         <Text style={{ textAlign: "left", textTransform: "capitalize" }}>
@@ -35,7 +35,7 @@ class InputFiled extends Component {
             Error in {label}
           </Text>
         )}
-      </KeyboardAvoidingView>
+      </View>
     );
   }
 }
