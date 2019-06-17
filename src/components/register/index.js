@@ -1,5 +1,11 @@
 import React, { Component } from "react";
-import { View, TouchableOpacity, Text, Picker } from "react-native";
+import {
+  View,
+  TouchableOpacity,
+  Text,
+  Picker,
+  ActivityIndicator
+} from "react-native";
 import InputFiled from "../textfiled";
 import firebase from "../../utils/firebase";
 import { StackActions, NavigationActions } from "react-navigation";
@@ -12,7 +18,8 @@ class RegisterForm extends Component {
       gender: "",
       email: { text: "", error: false },
       password: { text: "", error: false },
-      confirmPassword: { text: "", error: false }
+      confirmPassword: { text: "", error: false },
+      isSubmit: false
     };
   }
   validateEmail = email => {
@@ -97,6 +104,7 @@ class RegisterForm extends Component {
     return temp;
   };
   _handelSubmit = async () => {
+    this.setState({ isSubmit: true });
     if (this.isValid()) {
       // const { email, fullname, password, gender } = this.state;
       // try {
@@ -123,6 +131,8 @@ class RegisterForm extends Component {
       this.props.navigation.navigate("Login");
       // alert("submit form");
     } else {
+      this.setState({ isSubmit: false });
+
       // alert("Error in form");
     }
   };
@@ -130,7 +140,7 @@ class RegisterForm extends Component {
     this.setState({ gender });
   };
   render() {
-    const { email, password, fullname, confirmPassword } = this.state;
+    const { email, password, fullname, confirmPassword, isSubmit } = this.state;
     return (
       <View>
         <InputFiled
@@ -199,10 +209,15 @@ class RegisterForm extends Component {
             marginTop: 50
           }}
           onPress={this._handelSubmit}
+          disabled={isSubmit}
         >
-          <Text style={{ textAlign: "center", color: "#ffffff" }}>
-            Register
-          </Text>
+          {isSubmit ? (
+            <ActivityIndicator />
+          ) : (
+            <Text style={{ textAlign: "center", color: "#ffffff" }}>
+              Register
+            </Text>
+          )}
         </TouchableOpacity>
       </View>
     );
