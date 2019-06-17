@@ -16,7 +16,8 @@ class Login extends Component {
   }
   render() {
     return (
-      <View
+      <KeyboardAvoidingView
+        behavior="padding"
         style={{
           flex: 1,
           justifyContent: "flex-start",
@@ -69,7 +70,7 @@ class Login extends Component {
           </TouchableOpacity>
         </View>
         <View />
-      </View>
+      </KeyboardAvoidingView>
     );
   }
 }

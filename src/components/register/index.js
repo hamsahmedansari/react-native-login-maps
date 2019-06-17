@@ -182,7 +182,9 @@ class RegisterForm extends Component {
           }}
           onPress={this._handelSubmit}
         >
-          <Text style={{ textAlign: "center", color: "#ffffff" }}>Login</Text>
+          <Text style={{ textAlign: "center", color: "#ffffff" }}>
+            Register
+          </Text>
         </TouchableOpacity>
       </View>
     );
