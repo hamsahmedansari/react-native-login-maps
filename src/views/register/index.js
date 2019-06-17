@@ -53,7 +53,9 @@ class Register extends Component {
           {/* </View> */}
         </ScrollView>
         <View style={{ width: "100%" }}>
-          <TouchableOpacity onPress={() => props.navigation.navigate("Login")}>
+          <TouchableOpacity
+            onPress={() => this.props.navigation.navigate("Login")}
+          >
             <Text style={{ textAlign: "center" }}>
               Already Have an Account ?{" "}
               <Text

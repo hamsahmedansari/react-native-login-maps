@@ -9,12 +9,6 @@ import Users from "../views/users";
 
 const getScreensNavigator = () => {
   let temp = {
-    Home: {
-      screen: Home,
-      navigationOptions: ({}) => ({
-        header: null
-      })
-    },
     Welcome: {
       screen: Welcome,
       navigationOptions: ({}) => ({ header: null })
@@ -30,6 +24,12 @@ const getScreensNavigator = () => {
     Login: {
       screen: Login,
       navigationOptions: ({}) => ({ header: null })
+    },
+    Home: {
+      screen: Home,
+      navigationOptions: ({}) => ({
+        header: null
+      })
     }
   };
   return temp;

@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { View, TouchableOpacity, Text, Picker } from "react-native";
 import InputFiled from "../textfiled";
+import firebase from "../../utils/firebase";
+import { StackActions, NavigationActions } from "react-navigation";
 
 class RegisterForm extends Component {
   constructor(props) {
@@ -9,7 +11,8 @@ class RegisterForm extends Component {
       fullname: { text: "", error: false },
       gender: "",
       email: { text: "", error: false },
-      password: { text: "", error: false }
+      password: { text: "", error: false },
+      confirmPassword: { text: "", error: false }
     };
   }
   validateEmail = email => {
@@ -75,8 +78,30 @@ class RegisterForm extends Component {
     }
     return true;
   };
-  _handelSubmit = () => {
+  _handelSubmit = async () => {
     if (this.isValid()) {
+      // const { email, fullname, password, gender } = this.state;
+      // try {
+      //   const user = await firebase
+      //     .auth()
+      //     .createUserWithEmailAndPassword(email.text, password.text);
+      //   await firebase
+      //     .firestore()
+      //     .collection("users")
+      //     .doc(user.user.uid)
+      //     .set({
+      //       fullname,
+      //       gender,
+      //       location: {}
+      //     });
+      //   const resetAction = StackActions.reset({
+      //     index: 0,
+      //     actions: [NavigationActions.navigate({ routeName: "Home" })],
+      //     key: null
+      //   });
+      //   this.props.navigation.dispatch(resetAction);
+      // } catch (error) {}
+
       this.props.navigation.navigate("Login");
       // alert("submit form");
     } else {
@@ -87,7 +112,7 @@ class RegisterForm extends Component {
     this.setState({ gender });
   };
   render() {
-    const { email, password, fullname } = this.state;
+    const { email, password, fullname, confirmPassword } = this.state;
     return (
       <View>
         <InputFiled
@@ -122,6 +147,20 @@ class RegisterForm extends Component {
             this.setState(per => ({
               ...per,
               password: { ...per.password, text }
+            }))
+          }
+        />
+
+        <InputFiled
+          text={confirmPassword.text}
+          error={confirmPassword.error}
+          label="Confirm Password"
+          placeholder="abc123"
+          isPassword={true}
+          changeText={text =>
+            this.setState(per => ({
+              ...per,
+              confirmPassword: { ...per.confirmPassword, text }
             }))
           }
         />

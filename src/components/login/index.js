@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { View, TouchableOpacity, Text } from "react-native";
 import InputFiled from "../textfiled";
+import { StackActions, NavigationActions } from "react-navigation";
 
 class LoginForm extends Component {
   constructor(props) {
@@ -56,11 +57,17 @@ class LoginForm extends Component {
   };
   _handelSubmit = () => {
     if (this.isValid()) {
-      this.props.navigation.navigate("Home");
+      const resetAction = StackActions.reset({
+        index: 0,
+        actions: [NavigationActions.navigate({ routeName: "Home" })],
+        key: null
+      });
+      this.props.navigation.dispatch(resetAction);
     } else {
       // alert("Error in form");
     }
   };
+
   render() {
     const { email, password } = this.state;
     return (

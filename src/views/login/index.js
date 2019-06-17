@@ -49,13 +49,15 @@ class Login extends Component {
         </View>
         <ScrollView style={{ width: "100%", paddingTop: 40 }}>
           {/* <View> */}
-          <LoginForm />
+          <LoginForm navigation={this.props.navigation} />
           {/* </View> */}
         </ScrollView>
         <View style={{ width: "100%" }}>
-          <TouchableOpacity onPress={() => props.navigation.navigate("Login")}>
+          <TouchableOpacity
+            onPress={() => this.props.navigation.navigate("Register")}
+          >
             <Text style={{ textAlign: "center" }}>
-              Din't Have an Account ?{" "}
+              Don't Have an Account ?{" "}
               <Text
                 style={{
                   color: "#0288D1"
