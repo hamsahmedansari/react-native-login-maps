@@ -7,9 +7,9 @@ import {
   KeyboardAvoidingView,
   TextInput
 } from "react-native";
-import LoginForm from "../../components/login";
+import RegisterForm from "../../components/register";
 
-class Login extends Component {
+class Register extends Component {
   constructor(props) {
     super(props);
     this.state = {};
@@ -43,18 +43,18 @@ class Login extends Component {
                 textTransform: "uppercase"
               }}
             >
-              Login
+              Register
             </Text>
           </View>
         </View>
         <ScrollView style={{ width: "100%", paddingTop: 40 }}>
           {/* <View> */}
-          <LoginForm />
+          <RegisterForm />
           {/* </View> */}
         </ScrollView>
         <View style={{ width: "100%" }}>
           <Text style={{ textAlign: "center" }}>
-            Din't Have an Account ?{" "}
+            Already Have an Account ?{" "}
             <Text
               style={{
                 color: "#0288D1"
@@ -70,4 +70,4 @@ class Login extends Component {
   }
 }
 
-export default Login;
+export default Register;

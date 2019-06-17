@@ -1,11 +1,13 @@
 import React, { Component } from "react";
-import { View, TouchableOpacity, Text } from "react-native";
+import { View, TouchableOpacity, Text, Picker } from "react-native";
 import InputFiled from "../textfiled";
 
-class LoginForm extends Component {
+class RegisterForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      fullname: { text: "", error: false },
+      gender: "",
       email: { text: "", error: false },
       password: { text: "", error: false }
     };
@@ -15,25 +17,8 @@ class LoginForm extends Component {
     return re.test(String(email).toLowerCase());
   };
   isValid = () => {
-    const { email, password } = this.state;
-    if (!this.validateEmail(email.text)) {
-      this.setState(per => ({
-        ...per,
-        email: {
-          ...per.email,
-          error: true
-        }
-      }));
-      return false;
-    } else {
-      this.setState(per => ({
-        ...per,
-        email: {
-          ...per.email,
-          error: false
-        }
-      }));
-    }
+    const { email, password, fullname } = this.state;
+
     if (String(password.text).length <= 4) {
       this.setState(per => ({
         ...per,
@@ -52,6 +37,42 @@ class LoginForm extends Component {
         }
       }));
     }
+    if (!this.validateEmail(email.text)) {
+      this.setState(per => ({
+        ...per,
+        email: {
+          ...per.email,
+          error: true
+        }
+      }));
+      return false;
+    } else {
+      this.setState(per => ({
+        ...per,
+        email: {
+          ...per.email,
+          error: false
+        }
+      }));
+    }
+    if (String(fullname.text).length <= 4) {
+      this.setState(per => ({
+        ...per,
+        fullname: {
+          ...per.fullname,
+          error: true
+        }
+      }));
+      return false;
+    } else {
+      this.setState(per => ({
+        ...per,
+        fullname: {
+          ...per.fullname,
+          error: false
+        }
+      }));
+    }
     return true;
   };
   _handelSubmit = () => {
@@ -61,10 +82,26 @@ class LoginForm extends Component {
       alert("Error in form");
     }
   };
+  _handelUpdateGender = gender => {
+    this.setState({ gender });
+  };
   render() {
-    const { email, password } = this.state;
+    const { email, password, fullname } = this.state;
     return (
       <View>
+        <InputFiled
+          text={fullname.text}
+          error={fullname.error}
+          label="Full Name"
+          placeholder="Jhon Wick"
+          changeText={text =>
+            this.setState(per => ({
+              ...per,
+              fullname: { ...per.fullname, text }
+            }))
+          }
+        />
+
         <InputFiled
           text={email.text}
           error={email.error}
@@ -87,6 +124,13 @@ class LoginForm extends Component {
             }))
           }
         />
+        <Picker
+          selectedValue={this.state.gender}
+          onValueChange={this._handelUpdateGender}
+        >
+          <Picker.Item label={"Male"} value={"Male"} />
+          <Picker.Item label={"Female"} value={"Female"} />
+        </Picker>
         <TouchableOpacity
           style={{
             width: "100%",
@@ -105,4 +149,4 @@ class LoginForm extends Component {
   }
 }
 
-export default LoginForm;
+export default RegisterForm;
