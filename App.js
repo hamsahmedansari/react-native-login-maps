@@ -1,6 +1,6 @@
 import React from "react";
-import Welcome from "./src/views/welcome";
+import Login from "./src/views/login";
 
 export default function App() {
-  return <Welcome />;
+  return <Login />;
 }
