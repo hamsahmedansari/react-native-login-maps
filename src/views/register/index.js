@@ -49,20 +49,22 @@ class Register extends Component {
         </View>
         <ScrollView style={{ width: "100%", paddingTop: 40 }}>
           {/* <View> */}
-          <RegisterForm />
+          <RegisterForm navigation={this.props.navigation} />
           {/* </View> */}
         </ScrollView>
         <View style={{ width: "100%" }}>
-          <Text style={{ textAlign: "center" }}>
-            Already Have an Account ?{" "}
-            <Text
-              style={{
-                color: "#0288D1"
-              }}
-            >
-              Click Here
+          <TouchableOpacity onPress={() => props.navigation.navigate("Login")}>
+            <Text style={{ textAlign: "center" }}>
+              Already Have an Account ?{" "}
+              <Text
+                style={{
+                  color: "#0288D1"
+                }}
+              >
+                Click Here
+              </Text>
             </Text>
-          </Text>
+          </TouchableOpacity>
         </View>
         <View />
       </View>

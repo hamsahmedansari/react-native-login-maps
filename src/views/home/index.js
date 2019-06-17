@@ -1,78 +1,54 @@
 import React, { Component } from "react";
-import { View, Text } from "react-native";
-import MapView, { Marker } from "react-native-maps";
-import { Constants, Location, Permissions } from "expo";
+import { ScrollView, Text, View } from "react-native";
+import Map from "./map";
+import Users from "../users";
+import { Constants } from "expo";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 class Home extends Component {
   constructor(props) {
     super(props);
-    this.state = { location: {} };
+    this.state = { isMapVisible: false };
   }
-  componentWillMount() {
-    this._getLocationAsync();
-  }
-
-  _getLocationAsync = async () => {
-    let { status } = await Permissions.askAsync(Permissions.LOCATION);
-    if (status !== "granted") {
-      alert("Permission is not Given");
-    }
-
-    let location = await Location.getCurrentPositionAsync({});
-    this.setState({ location });
-  };
 
   render() {
-    console.log("====================================");
-    console.log(this.state.location);
-    console.log("====================================");
-    const markers = [
-      {
-        latitude: 24.9051051,
-        longitude: 67.0774487
-      },
-      {
-        latitude: 22.9051051,
-        longitude: 69.0774487
-      },
-      {
-        latitude: 24.9051021,
-        longitude: 67.0774387
-      },
-      {
-        latitude: 24.9051151,
-        longitude: 67.077287
-      }
-    ];
-    const { location } = this.state;
-    if (Object.entries(location).length === 0)
-      return (
-        <View>
-          <Text>Loading</Text>
-        </View>
-      );
     return (
-      <View>
-        {/* <Text>some text</Text> */}
-        <MapView
-          style={{ width: "100%", height: "100%" }}
-          initialRegion={{
-            latitude: location.coords.latitude,
-            longitude: location.coords.longitude,
-            latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421
+      <ScrollView>
+        <View style={{ height: Constants.statusBarHeight }} />
+        <View
+          style={{
+            flex: 1,
+            flexDirection: "row",
+            justifyContent: "space-around"
           }}
         >
-          {markers.map((maker, i) => (
-            <Marker
-              key={i}
-              coordinate={maker}
-              title={`i am ${i}`}
-              description={`some description of the maker no ${i}`}
-            />
-          ))}
-        </MapView>
-      </View>
+          <TouchableOpacity
+            onPress={() => this.setState({ isMapVisible: true })}
+          >
+            <Text
+              style={{
+                padding: 20,
+                fontWeight: !this.state.isMapVisible ? "normal" : "bold"
+              }}
+            >
+              My Location
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => this.setState({ isMapVisible: false })}
+          >
+            <Text
+              style={{
+                padding: 20,
+                fontWeight: this.state.isMapVisible ? "normal" : "bold"
+              }}
+            >
+              All Users
+            </Text>
+          </TouchableOpacity>
+        </View>
+        {this.state.isMapVisible ? <Map /> : <Users />}
+      </ScrollView>
     );
   }
 }

@@ -24,20 +24,20 @@ class Users extends Component {
   render() {
     const { users: data } = this.state;
     return (
-      <View>
-        <FlatList
-          data={data}
-          keyExtractor={item => String(item._id)}
-          ListEmptyComponent={() => <Text>List is Empty</Text>}
-          renderItem={({ item }) => (
-            <TouchableOpacity
-              style={{ width: "100%", padding: 10, backgroundColor: "#ccc" }}
-            >
-              <Text style={{ textTransform: "capitalize" }}>{item.name}</Text>
-            </TouchableOpacity>
-          )}
-        />
-      </View>
+      // <View>
+      <FlatList
+        data={data}
+        keyExtractor={item => String(item._id)}
+        ListEmptyComponent={() => <Text>List is Empty</Text>}
+        renderItem={({ item }) => (
+          <TouchableOpacity
+            style={{ width: "100%", padding: 10, backgroundColor: "#ccc" }}
+          >
+            <Text style={{ textTransform: "capitalize" }}>{item.name}</Text>
+          </TouchableOpacity>
+        )}
+      />
+      // </View>
     );
   }
 }

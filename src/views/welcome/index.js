@@ -30,19 +30,22 @@ const Welcome = props => {
             padding: 10,
             borderRadius: 10
           }}
+          onPress={() => props.navigation.navigate("Login")}
         >
           <Text style={{ color: "#ffffff", textAlign: "center" }}>Login</Text>
         </TouchableOpacity>
-        <Text style={{ textAlign: "center" }}>
-          Din't Have an Account ?{" "}
-          <Text
-            style={{
-              color: "#0288D1"
-            }}
-          >
-            Click Here
+        <TouchableOpacity onPress={() => props.navigation.navigate("Register")}>
+          <Text style={{ textAlign: "center" }}>
+            Din't Have an Account ?{" "}
+            <Text
+              style={{
+                color: "#0288D1"
+              }}
+            >
+              Click Here
+            </Text>
           </Text>
-        </Text>
+        </TouchableOpacity>
       </View>
       <View />
     </View>

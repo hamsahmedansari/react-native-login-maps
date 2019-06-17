@@ -77,9 +77,10 @@ class RegisterForm extends Component {
   };
   _handelSubmit = () => {
     if (this.isValid()) {
-      alert("submit form");
+      this.props.navigation.navigate("Login");
+      // alert("submit form");
     } else {
-      alert("Error in form");
+      // alert("Error in form");
     }
   };
   _handelUpdateGender = gender => {
