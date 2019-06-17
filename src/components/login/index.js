@@ -17,6 +17,7 @@ class LoginForm extends Component {
   };
   isValid = () => {
     const { email, password } = this.state;
+    let temp = true;
     if (!this.validateEmail(email.text)) {
       this.setState(per => ({
         ...per,
@@ -25,7 +26,7 @@ class LoginForm extends Component {
           error: true
         }
       }));
-      return false;
+      temp = false;
     } else {
       this.setState(per => ({
         ...per,
@@ -43,7 +44,7 @@ class LoginForm extends Component {
           error: true
         }
       }));
-      return false;
+      temp = false;
     } else {
       this.setState(per => ({
         ...per,
@@ -53,7 +54,7 @@ class LoginForm extends Component {
         }
       }));
     }
-    return true;
+    return temp;
   };
   _handelSubmit = () => {
     if (this.isValid()) {

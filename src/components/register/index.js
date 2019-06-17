@@ -21,7 +21,7 @@ class RegisterForm extends Component {
   };
   isValid = () => {
     const { email, password, fullname } = this.state;
-
+    let temp = true;
     if (String(password.text).length <= 4) {
       this.setState(per => ({
         ...per,
@@ -30,7 +30,7 @@ class RegisterForm extends Component {
           error: true
         }
       }));
-      return false;
+      temp = false;
     } else {
       this.setState(per => ({
         ...per,
@@ -48,7 +48,7 @@ class RegisterForm extends Component {
           error: true
         }
       }));
-      return false;
+      temp = false;
     } else {
       this.setState(per => ({
         ...per,
@@ -66,7 +66,7 @@ class RegisterForm extends Component {
           error: true
         }
       }));
-      return false;
+      temp = false;
     } else {
       this.setState(per => ({
         ...per,
@@ -76,7 +76,7 @@ class RegisterForm extends Component {
         }
       }));
     }
-    return true;
+    return temp;
   };
   _handelSubmit = async () => {
     if (this.isValid()) {
