@@ -4,10 +4,11 @@ import {
   TouchableOpacity,
   Text,
   Picker,
-  ActivityIndicator
+  ActivityIndicator,
+  Alert
 } from "react-native";
 import InputFiled from "../textfiled";
-import firebase from "../../utils/firebase";
+import { registerUser } from "../../api/auth";
 import { StackActions, NavigationActions } from "react-navigation";
 
 class RegisterForm extends Component {
@@ -15,7 +16,7 @@ class RegisterForm extends Component {
     super(props);
     this.state = {
       fullname: { text: "", error: false },
-      gender: "",
+      gender: "Male",
       email: { text: "", error: false },
       password: { text: "", error: false },
       confirmPassword: { text: "", error: false },
@@ -47,7 +48,7 @@ class RegisterForm extends Component {
         }
       }));
     }
-    if (String(confirmPassword.text).length <= 4) {
+    if (String(confirmPassword.text).length !== String(password.text).length) {
       this.setState(per => ({
         ...per,
         confirmPassword: {
@@ -106,34 +107,25 @@ class RegisterForm extends Component {
   _handelSubmit = async () => {
     this.setState({ isSubmit: true });
     if (this.isValid()) {
-      // const { email, fullname, password, gender } = this.state;
-      // try {
-      //   const user = await firebase
-      //     .auth()
-      //     .createUserWithEmailAndPassword(email.text, password.text);
-      //   await firebase
-      //     .firestore()
-      //     .collection("users")
-      //     .doc(user.user.uid)
-      //     .set({
-      //       fullname,
-      //       gender,
-      //       location: {}
-      //     });
-      //   const resetAction = StackActions.reset({
-      //     index: 0,
-      //     actions: [NavigationActions.navigate({ routeName: "Home" })],
-      //     key: null
-      //   });
-      //   this.props.navigation.dispatch(resetAction);
-      // } catch (error) {}
-
-      this.props.navigation.navigate("Login");
-      // alert("submit form");
+      const { email, fullname, password, gender } = this.state;
+      try {
+        await registerUser(email.text, fullname.text, password.text, gender);
+        this.setState({ isSubmit: false });
+      } catch (error) {
+        if (
+          error.message ===
+          "The email address is already in use by another account."
+        ) {
+          Alert.alert(
+            "Error Email Already Exist",
+            "The email address is already in use by another account."
+          );
+          this.props.navigation.navigate("Login");
+        }
+        this.setState({ isSubmit: false });
+      }
     } else {
       this.setState({ isSubmit: false });
-
-      // alert("Error in form");
     }
   };
   _handelUpdateGender = gender => {
@@ -184,6 +176,7 @@ class RegisterForm extends Component {
           error={confirmPassword.error}
           label="Confirm Password"
           placeholder="abc123"
+          errorMsg="Password don't Matched"
           isPassword={true}
           changeText={text =>
             this.setState(per => ({
@@ -203,7 +196,7 @@ class RegisterForm extends Component {
           style={{
             width: "100%",
             maxHeight: 50,
-            backgroundColor: "#0288D1",
+            backgroundColor: isSubmit ? "#ccc" : "#0288D1",
             padding: 10,
             borderRadius: 5,
             marginTop: 50

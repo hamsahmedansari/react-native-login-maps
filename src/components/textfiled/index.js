@@ -8,6 +8,7 @@ class InputFiled extends Component {
       changeText,
       label = "",
       placeholder,
+      errorMsg = "",
       isPassword = false
     } = this.props;
     return (
@@ -32,7 +33,7 @@ class InputFiled extends Component {
         />
         {error && (
           <Text style={{ textAlign: "right", textTransform: "capitalize" }}>
-            Error in {label}
+            {errorMsg.length ? errorMsg : `Error in ${label}`}
           </Text>
         )}
       </KeyboardAvoidingView>
