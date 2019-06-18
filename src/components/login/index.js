@@ -1,5 +1,11 @@
 import React, { Component } from "react";
-import { View, TouchableOpacity, Text, ActivityIndicator } from "react-native";
+import {
+  AsyncStorage,
+  View,
+  TouchableOpacity,
+  Text,
+  ActivityIndicator
+} from "react-native";
 import InputFiled from "../textfiled";
 import { StackActions, NavigationActions } from "react-navigation";
 import { loginUser } from "../../api/auth";
@@ -8,8 +14,8 @@ class LoginForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: { text: "", error: false },
-      password: { text: "", error: false },
+      email: { text: "abc@aabc.com", error: false },
+      password: { text: "abc123", error: false },
       isSubmit: false
     };
   }
@@ -65,9 +71,8 @@ class LoginForm extends Component {
       const { email, password } = this.state;
       try {
         const user = await loginUser(email.text, password.text);
-        console.log("====================================");
-        console.log(user);
-        console.log("====================================");
+        await AsyncStorage.setItem("@currentUser", user.id);
+
         const resetAction = StackActions.reset({
           index: 0,
           actions: [NavigationActions.navigate({ routeName: "Home" })],

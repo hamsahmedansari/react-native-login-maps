@@ -109,7 +109,14 @@ class RegisterForm extends Component {
     if (this.isValid()) {
       const { email, fullname, password, gender } = this.state;
       try {
-        await registerUser(email.text, fullname.text, password.text, gender);
+        const uid = await registerUser(
+          email.text,
+          fullname.text,
+          password.text,
+          gender
+        );
+        await AsyncStorage.setItem("@currentUser", uid);
+
         this.setState({ isSubmit: false });
         const resetAction = StackActions.reset({
           index: 0,

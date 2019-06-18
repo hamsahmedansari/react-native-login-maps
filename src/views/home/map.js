@@ -1,15 +1,27 @@
 import React, { Component } from "react";
-import { View, Text, Dimensions } from "react-native";
+import { View, Text, Dimensions, AsyncStorage } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import { Location, Permissions, Constants } from "expo";
+import { updateUserLocation, getAllUsers } from "../../api/helper";
 
 class Map extends Component {
   constructor(props) {
     super(props);
-    this.state = { location: {} };
+    this.state = { location: {}, uid: "", users: {} };
+    this._allUser = null;
   }
-  componentWillMount() {
+
+  componentWillUnmount() {
+    if (this._allUser) this._allUser = null;
+  }
+
+  async componentWillMount() {
+    const uid = this.props.uid
+      ? this.props.uid
+      : await AsyncStorage.getItem("@currentUser");
+    this.setState({ uid });
     this._getLocationAsync();
+    await this.getAllUsersLocation();
   }
 
   _getLocationAsync = async () => {
@@ -17,31 +29,40 @@ class Map extends Component {
     if (status !== "granted") {
       alert("Permission is not Given");
     }
-
-    let location = await Location.getCurrentPositionAsync({});
-    this.setState({ location });
+    const { uid } = this.state;
+    await Location.watchPositionAsync({}, location =>
+      this.updateServer(location, uid)
+    );
   };
-
+  updateServer = async (location, uid) => {
+    try {
+      updateUserLocation(location, uid);
+      this.setState({ location });
+    } catch (error) {
+      alert("Error is updating location");
+      console.log(error);
+    }
+  };
+  getAllUsersLocation = async () => {
+    this._allUser = getAllUsers()
+      .get()
+      .then(snapshot => {
+        const temp = {};
+        snapshot.docs.forEach(doc => {
+          if (doc && doc.exists) {
+            let items = doc.data();
+            let uid = doc.id;
+            temp[uid] = { ...items.location };
+          }
+        });
+        this.setState(per => ({
+          ...per,
+          users: temp
+        }));
+      });
+  };
   render() {
-    const markers = [
-      {
-        latitude: 24.9051051,
-        longitude: 67.0774487
-      },
-      {
-        latitude: 22.9051051,
-        longitude: 69.0774487
-      },
-      {
-        latitude: 24.9051021,
-        longitude: 67.0774387
-      },
-      {
-        latitude: 24.9051151,
-        longitude: 67.077287
-      }
-    ];
-    const { location } = this.state;
+    const { location, users } = this.state;
     if (Object.entries(location).length === 0)
       return (
         <View>
@@ -49,8 +70,6 @@ class Map extends Component {
         </View>
       );
     return (
-      //   <View>
-      // {/* <Text>some text</Text> */}
       <MapView
         style={{
           width: Dimensions.get("window").width,
@@ -64,16 +83,18 @@ class Map extends Component {
           longitudeDelta: 0.0421
         }}
       >
-        {markers.map((maker, i) => (
+        {Object.keys(users).map((uid, i) => (
           <Marker
             key={i}
-            coordinate={maker}
+            coordinate={{
+              longitude: users[uid].coords.longitude,
+              latitude: users[uid].coords.latitude
+            }}
             title={`i am ${i}`}
             description={`some description of the maker no ${i}`}
           />
         ))}
       </MapView>
-      //   {/* </View> */}
     );
   }
 }

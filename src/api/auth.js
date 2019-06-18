@@ -1,7 +1,7 @@
 import { auth, firestore } from "../utils/firebase";
 
 export const registerUser = async (email, fullname, password, gender) =>
-  auth.createUserWithEmailAndPassword(email, password).then(({ user }) => {
+  auth.createUserWithEmailAndPassword(email, password).then(({ user }) =>
     firestore
       .collection("users")
       .doc(user.uid)
@@ -9,8 +9,11 @@ export const registerUser = async (email, fullname, password, gender) =>
         fullname,
         gender,
         location: {}
-      });
-  });
+      })
+      .then(d => {
+        return user.uid;
+      })
+  );
 
 export const loginUser = async (email, password) =>
   auth
