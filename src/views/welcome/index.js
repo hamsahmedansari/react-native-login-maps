@@ -9,7 +9,7 @@ class Welcome extends React.Component {
   }
   async componentWillMount() {
     const user = await AsyncStorage.getItem("@currentUser");
-    if (user.length) {
+    if (user) {
       const resetAction = StackActions.reset({
         index: 0,
         actions: [NavigationActions.navigate({ routeName: "Home" })],
@@ -48,12 +48,12 @@ class Welcome extends React.Component {
               padding: 10,
               borderRadius: 10
             }}
-            onPress={() => props.navigation.navigate("Login")}
+            onPress={() => this.props.navigation.navigate("Login")}
           >
             <Text style={{ color: "#ffffff", textAlign: "center" }}>Login</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={() => props.navigation.navigate("Register")}
+            onPress={() => this.props.navigation.navigate("Register")}
           >
             <Text style={{ textAlign: "center" }}>
               Din't Have an Account ?{" "}

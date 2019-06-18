@@ -3,6 +3,7 @@ import {
   View,
   TouchableOpacity,
   Text,
+  AsyncStorage,
   Picker,
   ActivityIndicator,
   Alert
@@ -125,6 +126,8 @@ class RegisterForm extends Component {
         });
         this.props.navigation.dispatch(resetAction);
       } catch (error) {
+        console.log(error);
+
         if (
           error.message ===
           "The email address is already in use by another account."

@@ -1,23 +1,32 @@
 import React, { Component } from "react";
-import { ScrollView, Text, View } from "react-native";
+import { ScrollView, AsyncStorage, Text, View } from "react-native";
 import Map from "./map";
 import Users from "../users";
 import { Constants } from "expo";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { StackActions, NavigationActions } from "react-navigation";
+import { logout } from "../../api/auth";
 
 class Home extends Component {
   constructor(props) {
     super(props);
     this.state = { isMapVisible: true };
   }
-  _handleLogout = () => {
-    const resetAction = StackActions.reset({
-      index: 0,
-      actions: [NavigationActions.navigate({ routeName: "Welcome" })],
-      key: null
-    });
-    this.props.navigation.dispatch(resetAction);
+  _handleLogout = async () => {
+    try {
+      await logout();
+      await AsyncStorage.removeItem("@currentUser");
+      const resetAction = StackActions.reset({
+        index: 0,
+        actions: [NavigationActions.navigate({ routeName: "Welcome" })],
+        key: null
+      });
+      this.props.navigation.dispatch(resetAction);
+    } catch (error) {
+      console.log("====================================");
+      console.log(error);
+      console.log("====================================");
+    }
   };
   render() {
     return (

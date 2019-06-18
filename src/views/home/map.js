@@ -50,9 +50,9 @@ class Map extends Component {
         const temp = {};
         snapshot.docs.forEach(doc => {
           if (doc && doc.exists) {
-            let items = doc.data();
+            let item = doc.data();
             let uid = doc.id;
-            temp[uid] = { ...items.location };
+            temp[uid] = item;
           }
         });
         this.setState(per => ({
@@ -63,7 +63,10 @@ class Map extends Component {
   };
   render() {
     const { location, users } = this.state;
-    if (Object.entries(location).length === 0)
+    if (
+      Object.entries(location).length === 0 ||
+      Object.entries(users).length === 0
+    )
       return (
         <View>
           <Text>Loading</Text>
@@ -85,13 +88,13 @@ class Map extends Component {
       >
         {Object.keys(users).map((uid, i) => (
           <Marker
-            key={i}
+            key={uid}
             coordinate={{
-              longitude: users[uid].coords.longitude,
-              latitude: users[uid].coords.latitude
+              longitude: users[uid].location.coords.longitude,
+              latitude: users[uid].location.coords.latitude
             }}
-            title={`i am ${i}`}
-            description={`some description of the maker no ${i}`}
+            title={users[uid].fullname}
+            description={users[uid].gender}
           />
         ))}
       </MapView>
