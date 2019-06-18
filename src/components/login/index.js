@@ -14,8 +14,8 @@ class LoginForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: { text: "abc@aabc.com", error: false },
-      password: { text: "abc123", error: false },
+      email: { text: "", error: false },
+      password: { text: "", error: false },
       isSubmit: false
     };
   }

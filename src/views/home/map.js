@@ -15,7 +15,7 @@ class Map extends Component {
     if (this._allUser) this._allUser = null;
   }
 
-  async componentWillMount() {
+  async componentDidMount() {
     const uid = this.props.uid
       ? this.props.uid
       : await AsyncStorage.getItem("@currentUser");
@@ -62,10 +62,11 @@ class Map extends Component {
       });
   };
   render() {
-    const { location, users } = this.state;
+    const { location, users, uid } = this.state;
     if (
       Object.entries(location).length === 0 ||
-      Object.entries(users).length === 0
+      Object.entries(users).length === 0 ||
+      uid.length === 0
     )
       return (
         <View>
