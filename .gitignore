@@ -9,4 +9,4 @@ npm-debug.*
 web-build/
 web-report/
 
-src/utils/firebase.js
+./src/utils/firebase.js
