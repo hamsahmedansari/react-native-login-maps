@@ -111,6 +111,12 @@ class RegisterForm extends Component {
       try {
         await registerUser(email.text, fullname.text, password.text, gender);
         this.setState({ isSubmit: false });
+        const resetAction = StackActions.reset({
+          index: 0,
+          actions: [NavigationActions.navigate({ routeName: "Home" })],
+          key: null
+        });
+        this.props.navigation.dispatch(resetAction);
       } catch (error) {
         if (
           error.message ===

@@ -1,14 +1,16 @@
 import React, { Component } from "react";
-import { View, TouchableOpacity, Text } from "react-native";
+import { View, TouchableOpacity, Text, ActivityIndicator } from "react-native";
 import InputFiled from "../textfiled";
 import { StackActions, NavigationActions } from "react-navigation";
+import { loginUser } from "../../api/auth";
 
 class LoginForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
       email: { text: "", error: false },
-      password: { text: "", error: false }
+      password: { text: "", error: false },
+      isSubmit: false
     };
   }
   validateEmail = email => {
@@ -56,21 +58,36 @@ class LoginForm extends Component {
     }
     return temp;
   };
-  _handelSubmit = () => {
+  _handelSubmit = async () => {
+    this.setState({ isSubmit: true });
+
     if (this.isValid()) {
-      const resetAction = StackActions.reset({
-        index: 0,
-        actions: [NavigationActions.navigate({ routeName: "Home" })],
-        key: null
-      });
-      this.props.navigation.dispatch(resetAction);
+      const { email, password } = this.state;
+      try {
+        const user = await loginUser(email.text, password.text);
+        console.log("====================================");
+        console.log(user);
+        console.log("====================================");
+        const resetAction = StackActions.reset({
+          index: 0,
+          actions: [NavigationActions.navigate({ routeName: "Home" })],
+          key: null
+        });
+        this.props.navigation.dispatch(resetAction);
+        this.setState({ isSubmit: false });
+      } catch (error) {
+        console.log(error);
+        alert("Problem In Login please Check Your Email & Password");
+        this.setState({ isSubmit: false });
+      }
     } else {
       // alert("Error in form");
+      this.setState({ isSubmit: false });
     }
   };
 
   render() {
-    const { email, password } = this.state;
+    const { email, password, isSubmit } = this.state;
     return (
       <View>
         <InputFiled
@@ -99,14 +116,19 @@ class LoginForm extends Component {
           style={{
             width: "100%",
             maxHeight: 50,
-            backgroundColor: "#0288D1",
+            backgroundColor: isSubmit ? "#ccc" : "#0288D1",
             padding: 10,
             borderRadius: 5,
             marginTop: 50
           }}
           onPress={this._handelSubmit}
+          disabled={isSubmit}
         >
-          <Text style={{ textAlign: "center", color: "#ffffff" }}>Login</Text>
+          {isSubmit ? (
+            <ActivityIndicator />
+          ) : (
+            <Text style={{ textAlign: "center", color: "#ffffff" }}>Login</Text>
+          )}
         </TouchableOpacity>
       </View>
     );
